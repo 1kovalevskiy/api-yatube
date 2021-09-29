@@ -13,7 +13,6 @@ router.register(r'posts/(?P<post_id>[\d]+)/comments', CommentViewSet,
 
 urlpatterns = [
     path('v1/', include(router.urls)),
-    # JWT-эндпоинты, для управления JWT-токенами:
     path('v1/', include('djoser.urls.jwt')),
     path('v1/', include('djoser.urls')),
 
