@@ -65,9 +65,9 @@ jobs:
       - uses: actions/checkout@master
       - name: Build django
         run: |
-          docker build -t 1kovalevskiy/api-yatube:latest -f Dockerfile .
+          docker build -t 1kovalevskiy/apiyatube:latest -f Dockerfile .
       - name: Push django to docker.io
-        run: docker push 1kovalevskiy/api-yatube:latest
+        run: docker push 1kovalevskiy/apiyatube:latest
 
 
   deploy:
@@ -86,8 +86,8 @@ jobs:
           cd /home/ubuntu/api-yatube
           git pull
           sudo docker stop $(sudo docker ps -a -q)
-          sudo docker-compose rm 1kovalevskiy/api-yatube:latest
-          sudo docker pull 1kovalevskiy/api-yatube:latest
+          sudo docker-compose rm 1kovalevskiy/apiyatube:latest
+          sudo docker pull 1kovalevskiy/apiyatube:latest
           sudo docker-compose up -d
 
   send_message:
