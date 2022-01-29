@@ -1,0 +1,54 @@
+version: '3.3'
+
+volumes:
+  postgres_data:
+  media_value:
+  static_value:
+
+services:
+  postgres:
+    image: postgres:12
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+
+    env_file:
+      - ./.env
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+
+  web:
+    image: 1kovalevskiy/api-yatube:latest
+    restart: always
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+    volumes:
+      - media_value:/code/media/
+      - static_value:/code/static/
+    env_file:
+      - ./.env
+    command: bash -c "
+      python manage.py collectstatic --noinput &&
+      python manage.py migrate --noinput &&
+      python manage.py loaddata dump.json &&
+      gunicorn yatube_api.wsgi:application --bind 0.0.0.0:8000
+      "
+
+
+  nginx:
+    image: nginx:1.19.3
+
+    ports:
+      - "80:80"
+
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - static_value:/var/html/static/
+      - media_value:/var/html/media/
+
+    depends_on:
+      - web
