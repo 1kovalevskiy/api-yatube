@@ -17,7 +17,7 @@
 - Запустить `docker-compose up -d`
 
 ## Тестовый сервер
-[Тестовый сервер (не работает)](http://api-yatube.kovalevskiy.xyz)http://api-yatube.kovalevskiy.xyz
+[Тестовый сервер ](http://yatube-api.kovalevskiy.xyz/redoc)
 
 ## Технологии
 - API на "Django + DRF"
